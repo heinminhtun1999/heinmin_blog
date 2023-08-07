@@ -84,7 +84,6 @@ class Comment(db.Model):
     post = relationship("BlogPost", back_populates="comments")
 
 
-
 with app.app_context():
     db.create_all()
 
@@ -186,6 +185,7 @@ def show_post(post_id):
                 author=current_user,
                 post=requested_post
             )
+
             db.session.add(new_comment)
             db.session.commit()
 
@@ -197,6 +197,7 @@ def show_post(post_id):
 @is_admin
 def add_new_post():
     form = CreatePostForm()
+
     if form.validate_on_submit():
         new_post = BlogPost(
             title=form.title.data,
@@ -206,9 +207,11 @@ def add_new_post():
             author=current_user,
             date=date.today().strftime("%B %d, %Y")
         )
+
         db.session.add(new_post)
         db.session.commit()
         return redirect(url_for("get_all_posts"))
+
     return render_template("make-post.html", form=form)
 
 
@@ -224,6 +227,7 @@ def edit_post(post_id):
         author=post.author,
         body=post.body
     )
+
     if edit_form.validate_on_submit():
         post.title = edit_form.title.data
         post.subtitle = edit_form.subtitle.data
@@ -232,6 +236,7 @@ def edit_post(post_id):
         post.body = edit_form.body.data
         db.session.commit()
         return redirect(url_for("show_post", post_id=post.id))
+
     return render_template("make-post.html", form=edit_form, is_edit=True)
 
 
