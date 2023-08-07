@@ -245,7 +245,6 @@ def edit_post(post_id):
 @app.route("/delete/<int:post_id>")
 @is_admin
 def delete_post(post_id):
-    print(post_id, "asds")
     post_to_delete = db.get_or_404(BlogPost, post_id)
     db.session.delete(post_to_delete)
     db.session.commit()
